@@ -7,7 +7,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @SpringBootApplication
 @OpenAPIDefinition
-@EnableWebMvc
 public class SwaggerApplication {
 
     public static void main(String[] args) {

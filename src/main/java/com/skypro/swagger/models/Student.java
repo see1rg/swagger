@@ -3,14 +3,18 @@ package com.skypro.swagger.models;
 import java.util.Objects;
 
 public class Student {
-    private final long id;
+    private long id;
     private String name;
     private int age;
 
     public Student(String name, int age, long id) {
-        this.id = ++id;
+        ++id;
         this.name = name;
         this.age = age;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public Long getId() {

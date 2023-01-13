@@ -4,14 +4,13 @@ import com.skypro.swagger.models.Faculty;
 import com.skypro.swagger.services.FacultyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collection;
 
 
 @RestController
-@RequestMapping("/")
-@Component
+@RequestMapping("/faculty")
 public class FacultyController {
     private final FacultyService facultyService;
 
@@ -29,24 +28,28 @@ public class FacultyController {
         return ResponseEntity.ok(faculty);
     }
 
-    @GetMapping("/test")
-    public String test() {
-        return "mvmvm";
+    @GetMapping
+    public ResponseEntity<Collection<Faculty>> getAllFaculty() {
+        return ResponseEntity.ok(facultyService.getAllFaculty());
+    }
 
+    @DeleteMapping({"/id"})
+    public Faculty deleteFaculty(@PathVariable Long id) {
+        return facultyService.deleteFaculty(id);
     }
 
     @PostMapping
-    public Faculty createFaculty(@RequestParam("name") String name, @RequestParam("color") String color) {
-        return facultyService.createFaculty(name,color);
+    public Faculty createFaculty(@RequestBody Faculty faculty) {
+        return facultyService.createFaculty(faculty);
+    }
+
+
+    @PutMapping({"/id"})
+    public ResponseEntity<Faculty> editFaculty(@RequestBody Faculty faculty) {
+        Faculty findFaculty = facultyService.editFaculty(faculty);
+        if (findFaculty == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(findFaculty);
     }
 }
-
-//    @PutMapping()
-//    public ResponseEntity<Faculty> editFaculty(@RequestParam ("name") String name, @RequestParam("color") String color){
-////    Faculty faculty1 = facultyService.editFaculty(faculty);
-////        if (faculty1 == null){
-////            return ResponseEntity.notFound().build();
-////        }
-////        return ResponseEntity.ok(faculty1);
-////    }
-//return null;}}

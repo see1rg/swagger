@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +33,9 @@ public class StudentController {
 
     @GetMapping("{age}")
     public List<Student> getStudentWithAgeEquals(@PathVariable int age){
-       return studentService.findStudentWithAge(age);
+        if (age > 0) {
+            return studentService.findStudentWithAge(age);}
+        return Collections.emptyList();
     }
 
     @DeleteMapping("{id}")

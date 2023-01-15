@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,6 +61,8 @@ public class FacultyController {
 
     @GetMapping("{color}")
     public List<Faculty> getFacultyWithColorEquals(@PathVariable String color){
-        return facultyService.findFacultyWithColor(color);
+        if (color != null && !color.isBlank()) {
+        return facultyService.findFacultyWithColor(color);}
+        return Collections.emptyList();
     }
 }

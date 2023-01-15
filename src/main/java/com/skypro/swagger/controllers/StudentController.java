@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -19,17 +21,22 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @GetMapping({"/id"})
-    public ResponseEntity<Student> getStudentInfo(@PathVariable long id) {
-        Student faculty = studentService.findStudent(id);
-        if (faculty == null) {
+    @GetMapping("{id}")
+    public ResponseEntity<Student> getStudentInfo(@PathVariable int id) {
+        Student student = studentService.findStudent(id);
+        if (student == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(faculty);
+        return ResponseEntity.ok(student);
     }
 
-    @DeleteMapping({"/id"})
-    public Student deleteStudent(@PathVariable Long id) {
+    @GetMapping("{age}")
+    public List<Student> getStudentWithAgeEquals(@PathVariable int age){
+       return studentService.findStudentWithAge(age);
+    }
+
+    @DeleteMapping("{id}")
+    public Student deleteStudent(@PathVariable int id) {
         return studentService.deleteStudent(id);
     }
 
@@ -44,7 +51,7 @@ public class StudentController {
     }
 
 
-    @PutMapping({"/id"})
+    @PutMapping("{id}")
     public ResponseEntity<Student> editStudent(@RequestBody Student student) {
         Student findStudent = studentService.editStudent(student);
         if (findStudent == null) {

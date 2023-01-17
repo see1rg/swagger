@@ -1,7 +1,6 @@
 package com.skypro.swagger.controllers;
 
 import com.skypro.swagger.models.Faculty;
-import com.skypro.swagger.models.Student;
 import com.skypro.swagger.services.FacultyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,9 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-
-import static java.util.Arrays.stream;
 
 
 @RestController
@@ -59,10 +55,11 @@ public class FacultyController {
         return ResponseEntity.ok(findFaculty);
     }
 
-    @GetMapping("{color}")
-    public List<Faculty> getFacultyWithColorEquals(@PathVariable String color){
+    @GetMapping("/get/{color}")
+    public List<Faculty> getFacultyWithColorEquals(@PathVariable String color) {
         if (color != null && !color.isBlank()) {
-        return facultyService.findFacultyWithColor(color);}
+            return facultyService.findFacultyWithColor(color);
+        }
         return Collections.emptyList();
     }
 }

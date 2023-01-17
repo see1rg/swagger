@@ -2,22 +2,19 @@ package com.skypro.swagger.controllers;
 
 import com.skypro.swagger.models.Student;
 import com.skypro.swagger.services.StudentService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController
-@RequestMapping("/student")
+@RequestMapping("student")
 public class StudentController {
     private final StudentService studentService;
 
-    @Autowired
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
@@ -31,10 +28,11 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
-    @GetMapping("{age}")
-    public List<Student> getStudentWithAgeEquals(@PathVariable int age){
+    @GetMapping("/get/{age}")
+    public List<Student> getStudentWithAgeEquals(@PathVariable int age) {
         if (age > 0) {
-            return studentService.findStudentWithAge(age);}
+            return studentService.findStudentWithAge(age);
+        }
         return Collections.emptyList();
     }
 

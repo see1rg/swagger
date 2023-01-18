@@ -1,16 +1,25 @@
 package com.skypro.swagger.models;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.Objects;
-
+@Entity
 public class Student {
+    @Id
+    @GeneratedValue
     private int id;
     private String name;
     private int age;
 
-    public Student(String name, int age, int id) {
+    public Student(String name, int age) {
         ++id;
         this.name = name;
         this.age = age;
+    }
+
+    public Student() {
+
     }
 
     public void setId(int id) {

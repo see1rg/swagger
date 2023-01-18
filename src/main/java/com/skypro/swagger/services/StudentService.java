@@ -1,47 +1,45 @@
 package com.skypro.swagger.services;
 
 import com.skypro.swagger.models.Student;
+import com.skypro.swagger.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
-
-    private final HashMap<Integer, Student> students = new HashMap<>();
+    private final StudentRepository studentRepository;
     private int lastId = 0;
 
+    public StudentService(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
+
     public Student createStudent(Student student) {
-        student.setId(++lastId);
-        students.put(lastId, student);
-        return student;
+        return studentRepository.save(student);
     }
 
 
     public Student findStudent(int id) {
-        return students.get(id);
+        return studentRepository.findById(id).get();
     }
 
-    public List<Student> findStudentWithAge(int age){
-        return students.values().stream().filter(student -> student.getAge() == age).collect(Collectors.toList());
+    public List<Student> findStudentWithAge(int age) {
+        return studentRepository.findByAge(age);
+//        return studentRepository.findAll().stream()
+//                .filter(student -> student.getAge() == age).collect(Collectors.toList());
     }
 
-    public Student editStudent(Student faculty) {
-        if (students.containsKey(faculty.getId())) {
-            students.put(faculty.getId(), faculty);
-            return faculty;
-        }
-        return null;
+    public Student editStudent(Student student) {
+        return studentRepository.save(student);
     }
 
-    public Student deleteStudent(int id) {
-        return students.remove(id);
+    public void deleteStudent(int id) {
+        studentRepository.deleteById(id);
     }
 
     public Collection<Student> getAllStudent() {
-        return students.values();
+        return studentRepository.findAll();
     }
 }

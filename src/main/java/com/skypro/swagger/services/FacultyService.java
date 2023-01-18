@@ -1,54 +1,46 @@
 package com.skypro.swagger.services;
 
 import com.skypro.swagger.models.Faculty;
-import com.skypro.swagger.models.Student;
-import org.springframework.http.ResponseEntity;
+import com.skypro.swagger.repository.FacultyRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class FacultyService {
+    private final FacultyRepository facultyRepository;
 
-    private final HashMap<Long, Faculty> faculties = new HashMap<>();
     private long lastId = 0;
 
+    public FacultyService(FacultyRepository facultyRepository) {
+        this.facultyRepository = facultyRepository;
+    }
+
     public Faculty createFaculty(Faculty faculty) {
-        faculty.setId(++lastId);
-        faculties.put(lastId, faculty);
-        return faculty;
+        return facultyRepository.save(faculty);
     }
 
 
     public Faculty findFaculty(long id) {
-        return faculties.get(id);
+        return facultyRepository.findById(id).get();
     }
 
     public Faculty editFaculty(Faculty faculty) {
-        if (faculties.containsKey(faculty.getId())) {
-            faculties.put(faculty.getId(), faculty);
-            return faculty;
-        }
-        return null;
+        return facultyRepository.save(faculty);
     }
 
-    public Faculty deleteFaculty(long Id) {
-        return faculties.remove(Id);
+    public void deleteFaculty(long id) {
+        return facultyRepository.deleteById(id);
     }
 
     public Collection<Faculty> getAllFaculty() {
-        return faculties.values();
+        return facultyRepository.findAll();
     }
 
 
     public List<Faculty> findFacultyWithColor(String color) {
-        return faculties.values().stream().filter(faculty -> faculty.getColor()
-                .equals(color)).collect(Collectors.toList());
+        return facultyRepository.findByColor(color);
     }
 }

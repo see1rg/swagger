@@ -75,7 +75,7 @@ public class FacultyController {
 
     @GetMapping("/students/{id}")
     public ResponseEntity<List<Student>> getAllStudentFaculty(@PathVariable long id) {
-        if (id > -1){
+        if (id > -1) {
             return ResponseEntity.ok(studentService.findStudentsByFaculty(id));
         }
         return ResponseEntity.notFound().build();

@@ -13,7 +13,6 @@ import java.util.List;
 @RequestMapping("/student")
 public class StudentController {
     private final StudentService studentService;
-
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
@@ -62,7 +61,6 @@ public class StudentController {
     public ResponseEntity createStudent(@RequestBody Student student) {
         return ResponseEntity.ok(studentService.createStudent(student));
     }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<Student> editStudent(@RequestBody Student student) {

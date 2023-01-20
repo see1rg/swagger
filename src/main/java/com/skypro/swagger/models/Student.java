@@ -2,6 +2,7 @@ package com.skypro.swagger.models;
 
 import javax.persistence.*;
 import java.util.Objects;
+
 @Entity
 public class Student {
     @Id
@@ -31,7 +32,6 @@ public class Student {
     }
 
     public Student() {
-
     }
 
     public void setId(int id) {

@@ -3,7 +3,7 @@ package com.skypro.swagger.models;
 import java.util.Objects;
 
 public class Faculty {
-    private long id=0;
+    private long id;
     private String name;
     private String color;
 

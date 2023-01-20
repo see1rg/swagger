@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -42,8 +41,8 @@ public class FacultyController {
     }
 
     @PostMapping
-    public Faculty createFaculty(@RequestBody Faculty faculty) {
-        return facultyService.createFaculty(faculty);
+    public ResponseEntity createFaculty(@RequestBody Faculty faculty) {
+        return ResponseEntity.ok(facultyService.createFaculty(faculty));
     }
 
 
@@ -57,10 +56,10 @@ public class FacultyController {
     }
 
     @GetMapping("/get/{color}")
-    public List<Faculty> getFacultyWithColorEquals(@PathVariable String color) {
+    public ResponseEntity<List<Faculty>> getFacultyWithColorEquals(@PathVariable String color) {
         if (color != null && !color.isBlank()) {
-            return facultyService.findFacultyWithColor(color);
+            return ResponseEntity.ok(facultyService.findFacultyWithColor(color));
         }
-        return Collections.emptyList();
+        return ResponseEntity.notFound().build();
     }
 }

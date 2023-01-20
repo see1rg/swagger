@@ -13,7 +13,6 @@ public class Faculty {
     private String color;
 
     public Faculty(String name, String color) {
-        ++id;
         this.name = name;
         this.color = color;
     }

@@ -27,8 +27,6 @@ public class StudentService {
 
     public List<Student> findStudentWithAge(int age) {
         return studentRepository.findByAge(age);
-//        return studentRepository.findAll().stream()
-//                .filter(student -> student.getAge() == age).collect(Collectors.toList());
     }
 
     public Student editStudent(Student student) {

@@ -29,11 +29,11 @@ public class StudentController {
     }
 
     @GetMapping("/get/{age}")
-    public List<Student> getStudentWithAgeEquals(@PathVariable int age) {
+    public ResponseEntity<List<Student>> getStudentWithAgeEquals(@PathVariable int age) {
         if (age > 0) {
-            return studentService.findStudentWithAge(age);
+            return ResponseEntity.ok(studentService.findStudentWithAge(age));
         }
-        return Collections.emptyList();
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
@@ -48,8 +48,8 @@ public class StudentController {
     }
 
     @PostMapping
-    public Student createStudent(@RequestBody Student student) {
-        return studentService.createStudent(student);
+    public ResponseEntity createStudent(@RequestBody Student student) {
+        return ResponseEntity.ok(studentService.createStudent(student));
     }
 
 

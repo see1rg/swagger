@@ -1,16 +1,29 @@
 package com.skypro.swagger.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 @Entity
 public class Student {
     @Id
     @GeneratedValue
-    private int id;
+    private long id;
     private String name;
     private int age;
+    @ManyToOne
+    @JoinColumn(name = "faculty_id", referencedColumnName = "id")
+    private Faculty faculty;
+
+    public Faculty getFaculty() {
+        return faculty;
+    }
+
+    public Student(Faculty faculty) {
+        this.faculty = faculty;
+    }
+
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
+    }
 
     public Student(String name, int age) {
         this.name = name;
@@ -25,7 +38,7 @@ public class Student {
         this.id = id;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

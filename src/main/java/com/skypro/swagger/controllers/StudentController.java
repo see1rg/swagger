@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -28,10 +27,22 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
-    @GetMapping("/get/{age}")
-    public ResponseEntity<List<Student>> getStudentWithAgeEquals(@PathVariable int age) {
-        if (age > 0) {
+    @GetMapping("/getage/{age}")
+    public ResponseEntity<List<Student>> getStudentWithAgeEquals(@PathVariable int age,
+                                                                 @RequestParam(required = false) Integer max) {
+        if (age > 0 && max == null) {
             return ResponseEntity.ok(studentService.findStudentWithAge(age));
+        }
+        if (age > 0 && max > 0) {
+            return ResponseEntity.ok(studentService.findStudentByAgeBetween(age, max));
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/getfaculty/{id}")
+    public ResponseEntity getFacultyByStudent(@PathVariable long id) {
+        if (id > -1) {
+            return ResponseEntity.ok(studentService.findFacultyByStudents(id));
         }
         return ResponseEntity.notFound().build();
     }

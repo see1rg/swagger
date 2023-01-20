@@ -3,6 +3,8 @@ package com.skypro.swagger.models;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.List;
 import java.util.Objects;
 @Entity
 public class Faculty {
@@ -12,6 +14,9 @@ public class Faculty {
     private String name;
     private String color;
 
+    @OneToMany(mappedBy = "faculty")
+    private List<Student> students;
+
     public Faculty(String name, String color) {
         this.name = name;
         this.color = color;
@@ -20,6 +25,8 @@ public class Faculty {
     public Faculty() {
 
     }
+
+
 
     public long getId() {
         return id;

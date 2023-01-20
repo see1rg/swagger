@@ -12,8 +12,6 @@ import java.util.stream.Collectors;
 public class FacultyService {
     private final FacultyRepository facultyRepository;
 
-    private long lastId = 0;
-
     public FacultyService(FacultyRepository facultyRepository) {
         this.facultyRepository = facultyRepository;
     }
@@ -40,7 +38,7 @@ public class FacultyService {
     }
 
 
-    public List<Faculty> findFacultyWithColor(String color) {
-        return facultyRepository.findByColor(color);
+    public List<Faculty> findByColorOrNameIgnoreCase(String color, String name){
+        return facultyRepository.findByColorIgnoreCaseOrNameIgnoreCase(color, name);
     }
 }

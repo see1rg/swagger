@@ -1,23 +1,44 @@
 package com.skypro.swagger.models;
 
+import javax.persistence.*;
 import java.util.Objects;
-
+@Entity
 public class Student {
-    private int id;
+    @Id
+    @GeneratedValue
+    private long id;
     private String name;
     private int age;
+    @ManyToOne
+    @JoinColumn(name = "faculty_id", referencedColumnName = "id")
+    private Faculty faculty;
 
-    public Student(String name, int age, int id) {
-        ++id;
+    public Faculty getFaculty() {
+        return faculty;
+    }
+
+    public Student(Faculty faculty) {
+        this.faculty = faculty;
+    }
+
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
+    }
+
+    public Student(String name, int age) {
         this.name = name;
         this.age = age;
+    }
+
+    public Student() {
+
     }
 
     public void setId(int id) {
         this.id = id;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

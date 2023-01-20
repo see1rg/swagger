@@ -1,13 +1,15 @@
 package com.skypro.swagger.controllers;
 
 import com.skypro.swagger.models.Faculty;
+import com.skypro.swagger.models.Student;
+import com.skypro.swagger.repository.StudentRepository;
 import com.skypro.swagger.services.FacultyService;
+import com.skypro.swagger.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -15,10 +17,16 @@ import java.util.List;
 @RequestMapping("/faculty")
 public class FacultyController {
     private final FacultyService facultyService;
+    private final StudentService studentService;
+    private final StudentRepository studentRepository;
 
     @Autowired
-    public FacultyController(FacultyService facultyService) {
+    public FacultyController(FacultyService facultyService,
+                             StudentService studentService,
+                             StudentRepository studentRepository) {
         this.facultyService = facultyService;
+        this.studentService = studentService;
+        this.studentRepository = studentRepository;
     }
 
     @GetMapping("/{id}")
@@ -36,13 +44,14 @@ public class FacultyController {
     }
 
     @DeleteMapping("/{id}")
-    public Faculty deleteFaculty(@PathVariable Long id) {
-        return facultyService.deleteFaculty(id);
+    public ResponseEntity deleteFaculty(@PathVariable Long id) {
+        facultyService.deleteFaculty(id);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping
-    public Faculty createFaculty(@RequestBody Faculty faculty) {
-        return facultyService.createFaculty(faculty);
+    public ResponseEntity createFaculty(@RequestBody Faculty faculty) {
+        return ResponseEntity.ok(facultyService.createFaculty(faculty));
     }
 
 
@@ -56,10 +65,19 @@ public class FacultyController {
     }
 
     @GetMapping("/get/{color}")
-    public List<Faculty> getFacultyWithColorEquals(@PathVariable String color) {
-        if (color != null && !color.isBlank()) {
-            return facultyService.findFacultyWithColor(color);
+    public ResponseEntity<List<Faculty>> getFacultyWithColorEquals(@RequestParam(required = false) String color,
+                                                                   @RequestParam(required = false) String name) {
+        if (color != null || name != null) {
+            return ResponseEntity.ok(facultyService.findByColorOrNameIgnoreCase(color, name));
         }
-        return Collections.emptyList();
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/students/{id}")
+    public ResponseEntity<List<Student>> getAllStudentFaculty(@PathVariable long id) {
+        if (id > -1){
+            return ResponseEntity.ok(studentService.findStudentsByFaculty(id));
+        }
+        return ResponseEntity.notFound().build();
     }
 }

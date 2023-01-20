@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -28,17 +27,30 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
-    @GetMapping("/get/{age}")
-    public List<Student> getStudentWithAgeEquals(@PathVariable int age) {
-        if (age > 0) {
-            return studentService.findStudentWithAge(age);
+    @GetMapping("/getage/{age}")
+    public ResponseEntity<List<Student>> getStudentWithAgeEquals(@PathVariable int age,
+                                                                 @RequestParam(required = false) Integer max) {
+        if (age > 0 && max == null) {
+            return ResponseEntity.ok(studentService.findStudentWithAge(age));
         }
-        return Collections.emptyList();
+        if (age > 0 && max > 0) {
+            return ResponseEntity.ok(studentService.findStudentByAgeBetween(age, max));
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/getfaculty/{id}")
+    public ResponseEntity getFacultyByStudent(@PathVariable long id) {
+        if (id > -1) {
+            return ResponseEntity.ok(studentService.findFacultyByStudents(id));
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
-    public Student deleteStudent(@PathVariable int id) {
-        return studentService.deleteStudent(id);
+    public ResponseEntity deleteStudent(@PathVariable int id) {
+        studentService.deleteStudent(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping
@@ -47,8 +59,8 @@ public class StudentController {
     }
 
     @PostMapping
-    public Student createStudent(@RequestBody Student student) {
-        return studentService.createStudent(student);
+    public ResponseEntity createStudent(@RequestBody Student student) {
+        return ResponseEntity.ok(studentService.createStudent(student));
     }
 
 

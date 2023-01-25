@@ -92,7 +92,7 @@ public class StudentController {
         if (cover.getSize() >= 1024 * 300) {
             return ResponseEntity.badRequest().body("File is too big.");
         }
-        avatarService.uploadCover(id, cover);
+        avatarService.uploadAvatar(id, cover);
         return ResponseEntity.ok().build();
     }
 

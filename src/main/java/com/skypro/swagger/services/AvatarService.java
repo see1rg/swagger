@@ -22,8 +22,8 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 @Transactional
 public class AvatarService {
 
-    @Value("${avatar.cover.dir.path}")
-    private String coversDir;
+    @Value("${avatar.dir.path}")
+    private String avatarsDir;
     private final StudentService studentService;
     private final AvatarRepository avatarRepository;
     private final StudentRepository studentRepository;
@@ -36,10 +36,10 @@ public class AvatarService {
     }
 
 
-    public void uploadCover(Long studentId, MultipartFile file) throws IOException {
+    public void uploadAvatar(Long studentId, MultipartFile file) throws IOException {
         Student student = studentService.findStudent(studentId);
 
-        Path filePath = Path.of(coversDir, studentId + ", " + getExtension(file.getOriginalFilename()));
+        Path filePath = Path.of(avatarsDir, studentId + ", " + getExtension(file.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
         Files.deleteIfExists(filePath);
 

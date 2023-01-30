@@ -22,7 +22,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/student")
+@RequestMapping("/students")
 public class StudentController {
     private final StudentService studentService;
     private final AvatarService avatarService;
@@ -41,12 +41,11 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
-    @GetMapping("/getage/{age}")
+    @GetMapping("/find/{age}")
     public ResponseEntity<List<Student>> getStudentWithAgeEquals(@PathVariable int age,
                                                                  @RequestParam(required = false) Integer max) {
 
         if (age > 0 && max == null) {
-            System.out.println(age);
             return ResponseEntity.ok(studentService.findStudentWithAge(age));
         }
         if (age > 0 && max > 0) {
@@ -56,7 +55,7 @@ public class StudentController {
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/getfaculty/{name}")
+    @GetMapping("/find-faculty/{name}")
     public ResponseEntity getFacultyByStudent(@PathVariable String name) {
         if (name != null) {
             return ResponseEntity.ok(studentService.findFacultyByStudents(name));

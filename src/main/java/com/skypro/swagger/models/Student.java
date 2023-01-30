@@ -20,10 +20,6 @@ public class Student {
         return faculty;
     }
 
-    public Student(Faculty faculty) {
-        this.faculty = faculty;
-    }
-
     public void setFaculty(Faculty faculty) {
         this.faculty = faculty;
     }
@@ -31,6 +27,12 @@ public class Student {
     public Student(String name, int age) {
         this.name = name;
         this.age = age;
+    }
+
+    public Student(String name, int age, Faculty faculty) {
+        this.name = name;
+        this.age = age;
+        this.faculty = faculty;
     }
 
     public Student() {

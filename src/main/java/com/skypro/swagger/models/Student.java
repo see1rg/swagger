@@ -1,12 +1,14 @@
 package com.skypro.swagger.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Entity
 public class Student {
     @Id
     @GeneratedValue
+    @NotNull
     private long id;
     private String name;
     private int age;
@@ -34,7 +36,7 @@ public class Student {
     public Student() {
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

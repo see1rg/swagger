@@ -25,7 +25,7 @@ public class StudentService {
     }
 
 
-    public Student findStudent(int id) {
+    public Student findStudent(long id) {
         return studentRepository.findById(id).get();
     }
 
@@ -41,7 +41,7 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
-    public void deleteStudent(int id) {
+    public void deleteStudent(long id) {
         studentRepository.deleteById(id);
     }
 
@@ -53,7 +53,7 @@ public class StudentService {
         return studentRepository.findByAgeBetween(age, max);
     }
 
-    public List<Faculty> findFacultyByStudents(long id) {
-        return facultyRepository.findFacultyByStudentsId(id);
+    public List<Faculty> findFacultyByStudents(String name) {
+        return facultyRepository.findFacultyByStudentsName(name);
     }
 }

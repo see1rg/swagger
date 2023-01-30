@@ -18,7 +18,7 @@ public class StudentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Student> getStudentInfo(@PathVariable int id) {
+    public ResponseEntity<Student> getStudentInfo(@PathVariable long id) {
         Student student = studentService.findStudent(id);
         if (student == null) {
             return ResponseEntity.notFound().build();
@@ -29,25 +29,28 @@ public class StudentController {
     @GetMapping("/getage/{age}")
     public ResponseEntity<List<Student>> getStudentWithAgeEquals(@PathVariable int age,
                                                                  @RequestParam(required = false) Integer max) {
+
         if (age > 0 && max == null) {
+            System.out.println(age);
             return ResponseEntity.ok(studentService.findStudentWithAge(age));
         }
         if (age > 0 && max > 0) {
             return ResponseEntity.ok(studentService.findStudentByAgeBetween(age, max));
+
         }
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/getfaculty/{id}")
-    public ResponseEntity getFacultyByStudent(@PathVariable long id) {
-        if (id > -1) {
-            return ResponseEntity.ok(studentService.findFacultyByStudents(id));
+    @GetMapping("/getfaculty/{name}")
+    public ResponseEntity getFacultyByStudent(@PathVariable String name) {
+        if (name != null) {
+            return ResponseEntity.ok(studentService.findFacultyByStudents(name));
         }
         return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteStudent(@PathVariable int id) {
+    public ResponseEntity deleteStudent(@PathVariable long id) {
         studentService.deleteStudent(id);
         return ResponseEntity.ok().build();
     }

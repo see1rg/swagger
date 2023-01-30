@@ -2,6 +2,7 @@ package com.skypro.swagger.services;
 
 import com.skypro.swagger.models.Faculty;
 import com.skypro.swagger.models.Student;
+import com.skypro.swagger.repository.AvatarRepository;
 import com.skypro.swagger.repository.FacultyRepository;
 import com.skypro.swagger.repository.StudentRepository;
 import org.springframework.stereotype.Service;
@@ -13,11 +14,13 @@ import java.util.List;
 public class StudentService {
     private final StudentRepository studentRepository;
     private final FacultyRepository facultyRepository;
+    private final AvatarRepository avatarRepository;
 
     public StudentService(StudentRepository studentRepository,
-                          FacultyRepository facultyRepository) {
+                          FacultyRepository facultyRepository, AvatarRepository avatarRepository) {
         this.studentRepository = studentRepository;
         this.facultyRepository = facultyRepository;
+        this.avatarRepository = avatarRepository;
     }
 
     public Student createStudent(Student student) {
@@ -55,5 +58,9 @@ public class StudentService {
 
     public List<Faculty> findFacultyByStudents(String name) {
         return facultyRepository.findFacultyByStudentsName(name);
+    }
+
+    private String getExtension(String fileName) {
+        return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
 }

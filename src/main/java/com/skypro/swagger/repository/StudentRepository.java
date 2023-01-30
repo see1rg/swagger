@@ -4,6 +4,7 @@ import com.skypro.swagger.models.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface StudentRepository extends JpaRepository<Student, Long> {
     List<Student> findByAge(int age);
@@ -13,4 +14,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     List<Student> findStudentsByFaculty_Id(long id);
 
 
+    Optional<Student> findById(Long studentId);
 }
+

@@ -32,6 +32,17 @@ public class StudentController {
         this.avatarService = avatarService;
     }
 
+
+    @GetMapping("/number-of-all-students")
+    public ResponseEntity numberOfAllStudents(){
+        return ResponseEntity.ok(studentService.numberOfAllStudents());
+    }
+
+    @GetMapping("/avg-age-of-all-students")
+    public ResponseEntity avgAgeOfAllStudents(){
+        return ResponseEntity.ok(studentService.avgAgeOfAllStudents());
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Student> getStudentInfo(@PathVariable long id) {
         Student student = studentService.findStudent(id);
@@ -72,6 +83,11 @@ public class StudentController {
     @GetMapping
     public ResponseEntity<Collection<Student>> getAllStudent() {
         return ResponseEntity.ok(studentService.getAllStudent());
+    }
+
+    @GetMapping("/get-last-five-students")
+    public ResponseEntity<Collection<Student>> getLastFiveStudents() {
+        return ResponseEntity.ok(studentService.getLastFiveStudents());
     }
 
     @PostMapping
@@ -123,4 +139,12 @@ public class StudentController {
             is.transferTo(os);
         }
     }
+
+    @GetMapping(value = "/avatars")
+    public ResponseEntity<List<Avatar>> getAllAvatar(@RequestParam ("page") Integer pageNumber,
+                                                            @RequestParam ("size") Integer pageSize){
+        List<Avatar> avatars = avatarService.getAllAvatar(pageNumber, pageSize);
+        return ResponseEntity.ok(avatars);
+    }
+
 }

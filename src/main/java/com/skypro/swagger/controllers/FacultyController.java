@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 import java.util.List;
 
 
@@ -39,7 +38,7 @@ public class FacultyController {
     }
 
     @GetMapping
-    public ResponseEntity<Collection<Faculty>> getAllFaculty() {
+    public ResponseEntity<List<Faculty>> getAllFaculty() {
         return ResponseEntity.ok(facultyService.getAllFaculty());
     }
 

@@ -5,6 +5,7 @@ import com.skypro.swagger.models.Student;
 import com.skypro.swagger.repository.AvatarRepository;
 import com.skypro.swagger.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,6 +16,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
@@ -83,5 +85,10 @@ public class AvatarService {
 
     private String getExtension(String fileName) {
         return fileName.substring(fileName.lastIndexOf(".") + 1);
+    }
+
+    public List<Avatar> getAllAvatar(Integer pageNumber, Integer pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageNumber-1, pageSize);
+        return avatarRepository.findAll(pageRequest).getContent();
     }
 }

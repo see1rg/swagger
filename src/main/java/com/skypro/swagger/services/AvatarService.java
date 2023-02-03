@@ -17,6 +17,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Objects;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
@@ -41,7 +42,7 @@ public class AvatarService {
     public void uploadAvatar(Long studentId, MultipartFile file) throws IOException {
         Student student = studentService.findStudent(studentId);
 
-        Path filePath = Path.of(avatarsDir, studentId + ", " + getExtension(file.getOriginalFilename()));
+        Path filePath = Path.of(avatarsDir, studentId + ", " + getExtension(Objects.requireNonNull(file.getOriginalFilename())));
         Files.createDirectories(filePath.getParent());
         Files.deleteIfExists(filePath);
 
@@ -53,7 +54,7 @@ public class AvatarService {
         ) {
             bis.transferTo(bos);
         }
-        Avatar avatar = findAvatar(studentId);
+        Avatar avatar = findAvatarByStudentId(studentId);
         avatar.setStudent(student);
         avatar.setFilePath(filePath.toString());
         avatar.setFileSize(file.getSize());
@@ -79,8 +80,9 @@ public class AvatarService {
              }
     }
 
-    public Avatar findAvatar(Long studentId) {
-        return avatarRepository.findById(studentId).orElse(new Avatar());
+    public Avatar findAvatarByStudentId(Long studentId) {
+        return avatarRepository.findById(studentId)
+                .orElseThrow(()-> new IllegalArgumentException("Avatar not found"));
     }
 
     private String getExtension(String fileName) {

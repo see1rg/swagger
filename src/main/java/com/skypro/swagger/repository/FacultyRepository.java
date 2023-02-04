@@ -10,4 +10,7 @@ public interface FacultyRepository extends JpaRepository<Faculty, Long> {
 
     List<Faculty> findFacultyByStudentsId(long id);
 
+    List<Faculty> findFacultyByStudentsName(String name);
+
+
 }

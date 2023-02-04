@@ -6,6 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.List;
 import java.util.Objects;
+
 @Entity
 public class Faculty {
     @Id
@@ -23,10 +24,7 @@ public class Faculty {
     }
 
     public Faculty() {
-
     }
-
-
 
     public long getId() {
         return id;

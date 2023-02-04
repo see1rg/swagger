@@ -14,7 +14,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/faculty")
+@RequestMapping("/faculties")
 public class FacultyController {
     private final FacultyService facultyService;
     private final StudentService studentService;
@@ -64,18 +64,14 @@ public class FacultyController {
         return ResponseEntity.ok(findFaculty);
     }
 
-    @GetMapping("/get/{color}")
-    public ResponseEntity<List<Faculty>> getFacultyWithColorEquals(@RequestParam(required = false) String color,
-                                                                   @RequestParam(required = false) String name) {
-        if (color != null || name != null) {
-            return ResponseEntity.ok(facultyService.findByColorOrNameIgnoreCase(color, name));
-        }
-        return ResponseEntity.notFound().build();
+    @GetMapping("/find/{text}")
+    public ResponseEntity<List<Faculty>> getFacultyWithColorEquals(@RequestParam(required = false) String text) {
+        return ResponseEntity.ok(facultyService.findByColorOrNameIgnoreCase(text,text));
     }
 
     @GetMapping("/students/{id}")
     public ResponseEntity<List<Student>> getAllStudentFaculty(@PathVariable long id) {
-        if (id > -1){
+        if (id > -1) {
             return ResponseEntity.ok(studentService.findStudentsByFaculty(id));
         }
         return ResponseEntity.notFound().build();

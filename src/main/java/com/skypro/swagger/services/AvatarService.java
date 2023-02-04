@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
@@ -19,6 +18,8 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 
+import static java.awt.Image.SCALE_SMOOTH;
+import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 @Service
@@ -59,30 +60,42 @@ public class AvatarService {
         avatar.setFilePath(filePath.toString());
         avatar.setFileSize(file.getSize());
         avatar.setMediaType(file.getContentType());
-        avatar.setPreview(generatedImagePreview(filePath));
+        avatar.setPreview(generatePreview(filePath));
 
         avatarRepository.save(avatar);
     }
 
-    private byte[] generatedImagePreview(Path filePath) throws IOException {
-        try (InputStream is = Files.newInputStream(filePath);
-             BufferedInputStream bis = new BufferedInputStream(is, 1024);
-             ByteArrayOutputStream baos = new ByteArrayOutputStream()){
-                 BufferedImage image = ImageIO.read(bis);
-                 int height = image.getHeight() / (image.getWidth() / 100);
-                 BufferedImage preview = new BufferedImage(100, height, image.getType());
-                 Graphics2D graphics = preview.createGraphics();
-            graphics.drawImage(image, 0, 0, 100, height, null);
-            graphics.dispose();
 
-            ImageIO.write(preview, getExtension(filePath.getFileName().toString()), baos);
-            return baos.toByteArray();
-             }
+    public static byte[] generatePreview(Path filePath) throws IOException  {
+        BufferedImage originalImage = ImageIO.read(filePath.toFile());
+
+        int originalWidth = originalImage.getWidth();
+        int originalHeight = originalImage.getHeight();
+
+        int targetWidth;
+        int targetHeight;
+
+        if (originalWidth > originalHeight) {
+            targetWidth = 120;
+            targetHeight = (int) ((double) originalHeight / originalWidth * targetWidth);
+        } else {
+            targetHeight = 120;
+            targetWidth = (int) ((double) originalWidth / originalHeight * targetHeight);
+        }
+
+        BufferedImage resizedImage = new BufferedImage(targetWidth, targetHeight, TYPE_INT_RGB);
+        resizedImage.createGraphics().drawImage(originalImage.getScaledInstance(targetWidth,
+                targetHeight, SCALE_SMOOTH), 0, 0, null);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ImageIO.write(resizedImage, "jpg", outputStream);
+        outputStream.flush();
+
+        return outputStream.toByteArray();
     }
-
     public Avatar findAvatarByStudentId(Long studentId) {
-        return avatarRepository.findById(studentId)
-                .orElseThrow(()-> new IllegalArgumentException("Avatar not found"));
+        return avatarRepository.findAvatarByStudentId(studentId)
+                .orElse(new Avatar());
     }
 
     private String getExtension(String fileName) {

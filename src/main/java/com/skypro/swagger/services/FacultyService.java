@@ -4,7 +4,6 @@ import com.skypro.swagger.models.Faculty;
 import com.skypro.swagger.repository.FacultyRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -32,7 +31,7 @@ public class FacultyService {
         facultyRepository.deleteById(id);
     }
 
-    public Collection<Faculty> getAllFaculty() {
+    public List<Faculty> getAllFaculty() {
         return facultyRepository.findAll();
     }
 

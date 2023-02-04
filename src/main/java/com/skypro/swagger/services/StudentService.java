@@ -7,7 +7,6 @@ import com.skypro.swagger.repository.FacultyRepository;
 import com.skypro.swagger.repository.StudentRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -48,7 +47,7 @@ public class StudentService {
         studentRepository.deleteById(id);
     }
 
-    public Collection<Student> getAllStudent() {
+    public List<Student> getAllStudent() {
         return studentRepository.findAll();
     }
 
@@ -60,7 +59,15 @@ public class StudentService {
         return facultyRepository.findFacultyByStudentsName(name);
     }
 
-    private String getExtension(String fileName) {
-        return fileName.substring(fileName.lastIndexOf(".") + 1);
+    public Integer numberOfAllStudents() {
+        return studentRepository.numberOfAllStudents();
+    }
+
+    public Integer avgAgeOfAllStudents(){
+        return studentRepository.avgAgeOfAllStudents();
+    }
+
+    public List<Student> getLastFiveStudents() {
+        return studentRepository.getLastFiveStudents();
     }
 }

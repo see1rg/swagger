@@ -34,12 +34,12 @@ public class StudentController {
 
 
     @GetMapping("/number-of-all-students")
-    public ResponseEntity numberOfAllStudents(){
+    public ResponseEntity numberOfAllStudents() {
         return ResponseEntity.ok(studentService.numberOfAllStudents());
     }
 
     @GetMapping("/avg-age-of-all-students")
-    public ResponseEntity avgAgeOfAllStudents(){
+    public ResponseEntity avgAgeOfAllStudents() {
         return ResponseEntity.ok(studentService.avgAgeOfAllStudents());
     }
 
@@ -141,9 +141,10 @@ public class StudentController {
     }
 
     @GetMapping(value = "/avatars")
-    public ResponseEntity<List<Avatar>> getAllAvatar(@RequestParam ("page") Integer pageNumber,
-                                                            @RequestParam ("size") Integer pageSize){
+    public ResponseEntity<List<Avatar>> getAllAvatar(@RequestParam("page") Integer pageNumber,
+                                                     @RequestParam("size") Integer pageSize) {
         List<Avatar> avatars = avatarService.getAllAvatar(pageNumber, pageSize);
+        avatars.forEach(avatar -> avatar.setPreview(null));
         return ResponseEntity.ok(avatars);
     }
 

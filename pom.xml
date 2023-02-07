@@ -49,6 +49,10 @@
             <artifactId>mockito-testng</artifactId>
             <version>0.4.30</version>
         </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

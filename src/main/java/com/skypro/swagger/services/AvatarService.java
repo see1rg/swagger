@@ -4,6 +4,8 @@ import com.skypro.swagger.models.Avatar;
 import com.skypro.swagger.models.Student;
 import com.skypro.swagger.repository.AvatarRepository;
 import com.skypro.swagger.repository.StudentRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,8 @@ public class AvatarService {
     private final StudentService studentService;
     private final AvatarRepository avatarRepository;
     private final StudentRepository studentRepository;
+    Logger logger = LoggerFactory.getLogger(AvatarService.class);
+
 
     public AvatarService(StudentService studentService, AvatarRepository avatarRepository,
                          StudentRepository studentRepository) {
@@ -40,6 +44,8 @@ public class AvatarService {
 
 
     public void uploadAvatar(Long studentId, MultipartFile file) throws IOException {
+        logger.debug("Requesting to upload the avatar for the student with id: {}.", studentId);
+
         Student student = studentService.findStudent(studentId);
 
         Path filePath = Path.of(avatarsDir, studentId + "." + getExtension(Objects.requireNonNull(file.getOriginalFilename())));
@@ -65,6 +71,8 @@ public class AvatarService {
     }
 
     private byte[] generatedImagePreview(Path filePath) throws IOException {
+        logger.info("Generating preview.");
+
         try (InputStream is = Files.newInputStream(filePath);
              BufferedInputStream bis = new BufferedInputStream(is, 1024);
              ByteArrayOutputStream baos = new ByteArrayOutputStream()){
@@ -81,15 +89,18 @@ public class AvatarService {
     }
 
     public Avatar findAvatarByStudentId(Long studentId) {
+        logger.info("Requesting to find the avatar by student id: {}.", studentId);
         return avatarRepository.findAvatarByStudentId(studentId)
                 .orElse(new Avatar());
     }
 
     private String getExtension(String fileName) {
+        logger.info("Getting extension for the file with name: {}.", fileName);
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
 
     public List<Avatar> getAllAvatar(Integer pageNumber, Integer pageSize) {
+        logger.info("Requesting all avatars for page with number: {}.", pageNumber);
         PageRequest pageRequest = PageRequest.of(pageNumber-1, pageSize);
         return avatarRepository.findAll(pageRequest).getContent();
     }

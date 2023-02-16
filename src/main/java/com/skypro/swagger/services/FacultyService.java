@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -47,5 +48,13 @@ public class FacultyService {
     public List<Faculty> findByColorOrNameIgnoreCase(String color,String name) {
         logger.info("Requesting to find the faculty by the color: {} or name: {}.", color, name);
         return facultyRepository.findByColorIgnoreCaseOrNameIgnoreCase(color, name);
+    }
+
+    public String getLongestFaculty() {
+        logger.info("Requesting longest faculty.");
+        return facultyRepository.findAll().stream()
+                .map(Faculty::getName)
+                .max(Comparator.comparingInt(String::length))
+                .get();
     }
 }

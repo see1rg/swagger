@@ -42,6 +42,12 @@ public class FacultyController {
         return ResponseEntity.ok(facultyService.getAllFaculty());
     }
 
+    @GetMapping("/longest-faculty")
+    public ResponseEntity longestFaculty(){
+        return ResponseEntity.ok(facultyService.getLongestFaculty());
+    }
+
+
     @DeleteMapping("/{id}")
     public ResponseEntity deleteFaculty(@PathVariable Long id) {
         facultyService.deleteFaculty(id);

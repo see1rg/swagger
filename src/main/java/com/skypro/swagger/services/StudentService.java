@@ -9,7 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
@@ -84,5 +86,19 @@ public class StudentService {
     public List<Student> getLastFiveStudents() {
         logger.info("Requesting to get last five students.");
         return studentRepository.getLastFiveStudents();
+    }
+
+    public List<Student> findAll() {
+        logger.info("Requesting to get students start with A.");
+        return studentRepository.findAll();
+    }
+
+    public List<String> findStudentsStartWithA() {
+        logger.info("Requesting to get students start with A.");
+        return studentRepository.findAll().stream()
+                .filter(s -> s.getName().startsWith("A"))
+                .sorted(Comparator.comparing(Student::getName))
+                .map(s -> s.getName().toUpperCase())
+                .collect(Collectors.toList());
     }
 }

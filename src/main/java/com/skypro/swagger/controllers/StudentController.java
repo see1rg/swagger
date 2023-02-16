@@ -33,12 +33,12 @@ public class StudentController {
     }
 
 
-    @GetMapping("/number-of-all-students")
+    @GetMapping("/number-of-all")
     public ResponseEntity numberOfAllStudents() {
         return ResponseEntity.ok(studentService.numberOfAllStudents());
     }
 
-    @GetMapping("/avg-age-of-all-students")
+    @GetMapping("/avg-age-of-all")
     public ResponseEntity avgAgeOfAllStudents() {
         return ResponseEntity.ok(studentService.avgAgeOfAllStudents());
     }
@@ -85,10 +85,16 @@ public class StudentController {
         return ResponseEntity.ok(studentService.getAllStudent());
     }
 
-    @GetMapping("/get-last-five-students")
+    @GetMapping("/last-five")
     public ResponseEntity<Collection<Student>> getLastFiveStudents() {
         return ResponseEntity.ok(studentService.getLastFiveStudents());
     }
+
+    @GetMapping("/start-with-a")
+    public ResponseEntity<Collection<String>> getStudentStartWith(){
+        return ResponseEntity.ok(studentService.findStudentsStartWithA());
+    }
+
 
     @PostMapping
     public ResponseEntity createStudent(@RequestBody Student student) {

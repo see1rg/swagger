@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public class FacultyService {
     private final FacultyRepository facultyRepository;
-    Logger logger = LoggerFactory.getLogger(FacultyService.class);
+    private final Logger logger = LoggerFactory.getLogger(FacultyService.class);
 
     public FacultyService(FacultyRepository facultyRepository) {
         this.facultyRepository = facultyRepository;
@@ -45,7 +45,7 @@ public class FacultyService {
     }
 
 
-    public List<Faculty> findByColorOrNameIgnoreCase(String color,String name) {
+    public List<Faculty> findByColorOrNameIgnoreCase(String color, String name) {
         logger.info("Requesting to find the faculty by the color: {} or name: {}.", color, name);
         return facultyRepository.findByColorIgnoreCaseOrNameIgnoreCase(color, name);
     }

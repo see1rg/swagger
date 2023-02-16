@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
-    Logger logger = LoggerFactory.getLogger(StudentService.class);
+    private final Logger logger = LoggerFactory.getLogger(StudentService.class);
     private final StudentRepository studentRepository;
     private final FacultyRepository facultyRepository;
     private final AvatarRepository avatarRepository;
@@ -78,9 +78,10 @@ public class StudentService {
         return studentRepository.numberOfAllStudents();
     }
 
-    public Integer avgAgeOfAllStudents(){
+    public Double avgAgeOfAllStudents() {
         logger.info("Requesting average  age of all students.");
-        return studentRepository.avgAgeOfAllStudents();
+        return studentRepository.findAll().stream()
+                .collect(Collectors.averagingInt(Student::getAge));
     }
 
     public List<Student> getLastFiveStudents() {

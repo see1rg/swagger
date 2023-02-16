@@ -43,7 +43,7 @@ public class FacultyController {
     }
 
     @GetMapping("/longest-faculty")
-    public ResponseEntity longestFaculty(){
+    public ResponseEntity longestFaculty() {
         return ResponseEntity.ok(facultyService.getLongestFaculty());
     }
 
@@ -71,7 +71,7 @@ public class FacultyController {
 
     @GetMapping("/find/{text}")
     public ResponseEntity<List<Faculty>> getFacultyWithColorEquals(@RequestParam(required = false) String text) {
-        return ResponseEntity.ok(facultyService.findByColorOrNameIgnoreCase(text,text));
+        return ResponseEntity.ok(facultyService.findByColorOrNameIgnoreCase(text, text));
     }
 
     @GetMapping("/students/{id}")

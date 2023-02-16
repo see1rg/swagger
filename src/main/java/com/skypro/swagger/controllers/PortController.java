@@ -11,7 +11,7 @@ import java.util.stream.IntStream;
 @RequestMapping("/port")
 public class PortController {
     @GetMapping
-    public int getPort(HttpServletRequest request){
+    public int getPort(HttpServletRequest request) {
         return request.getServerPort();
     }
 

@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public interface StudentRepository extends JpaRepository<Student, Long> {
     List<Student> findByAge(int age);
+
     List<Student> findAll();
 
     List<Student> findByAgeBetween(int min, int max);
@@ -22,6 +23,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     @Query(value = "SELECT AVG(age) from student", nativeQuery = true)
     Integer avgAgeOfAllStudents();
+
     @Query(value = "SELECT * from student ORDER BY id DESC LIMIT 5", nativeQuery = true)
     List<Student> getLastFiveStudents();
 }

@@ -19,6 +19,8 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final FacultyRepository facultyRepository;
     private final AvatarRepository avatarRepository;
+    Object flag = new Object();
+
 
     public StudentService(StudentRepository studentRepository,
                           FacultyRepository facultyRepository, AvatarRepository avatarRepository) {
@@ -101,5 +103,41 @@ public class StudentService {
                 .sorted(Comparator.comparing(Student::getName))
                 .map(s -> s.getName().toUpperCase())
                 .collect(Collectors.toList());
+    }
+
+    public void studentsOnTheTerminal() {
+        List<String> list = getAllStudent()
+                .stream().map(Student::getName)
+                .limit(6).toList();
+
+        System.out.println(list.get(0) + "\n" + list.get(1));
+
+        new Thread(() -> {
+            System.out.println(list.get(2) + "\n" + list.get(3));
+        }).start();
+
+        new Thread(() -> {
+            System.out.println(list.get(4) + "\n" + list.get(5));
+        }).start();
+    }
+
+    public void studentsOnTheTerminalSynchronized() {
+        List<String> list = getAllStudent()
+                .stream().map(Student::getName)
+                .limit(6).toList();
+
+        printStudentsSynchronized(list.get(0), list.get(1));
+
+        new Thread(() -> {
+            printStudentsSynchronized(list.get(2), list.get(3));
+        }).start();
+
+        new Thread(() -> {
+            printStudentsSynchronized(list.get(4), list.get(5));
+        }).start();
+    }
+
+    public synchronized void printStudentsSynchronized(String student1, String student2) {
+        System.out.println(student1 + "\n" + student2);
     }
 }

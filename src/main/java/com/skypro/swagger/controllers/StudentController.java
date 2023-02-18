@@ -34,17 +34,7 @@ public class StudentController {
         this.avatarService = avatarService;
     }
 
-    @GetMapping("/show-the-students-on-the-terminal")
-    public ResponseEntity studentsOnTheTerminal() {
-        studentService.studentsOnTheTerminal();
-        return ok("Show the terminal.");
-    }
 
-    @GetMapping("/show-the-students-synchronized")
-    public ResponseEntity studentsOnTheTerminalSynchronized(){
-        studentService.studentsOnTheTerminalSynchronized();
-        return ok("Show the terminal.");
-    }
 
 
     @GetMapping("/number-of-all")

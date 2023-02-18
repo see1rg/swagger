@@ -20,6 +20,8 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 
+import static org.springframework.http.ResponseEntity.ok;
+
 
 @RestController
 @RequestMapping("/students")
@@ -32,15 +34,27 @@ public class StudentController {
         this.avatarService = avatarService;
     }
 
-
-    @GetMapping("/number-of-all-students")
-    public ResponseEntity numberOfAllStudents() {
-        return ResponseEntity.ok(studentService.numberOfAllStudents());
+    @GetMapping("/show-the-students-on-the-terminal")
+    public ResponseEntity studentsOnTheTerminal() {
+        studentService.studentsOnTheTerminal();
+        return ok("Show the terminal.");
     }
 
-    @GetMapping("/avg-age-of-all-students")
+    @GetMapping("/show-the-students-synchronized")
+    public ResponseEntity studentsOnTheTerminalSynchronized(){
+        studentService.studentsOnTheTerminalSynchronized();
+        return ok("Show the terminal.");
+    }
+
+
+    @GetMapping("/number-of-all")
+    public ResponseEntity numberOfAllStudents() {
+        return ok(studentService.numberOfAllStudents());
+    }
+
+    @GetMapping("/avg-age-of-all")
     public ResponseEntity avgAgeOfAllStudents() {
-        return ResponseEntity.ok(studentService.avgAgeOfAllStudents());
+        return ok(studentService.avgAgeOfAllStudents());
     }
 
     @GetMapping("/{id}")
@@ -49,7 +63,7 @@ public class StudentController {
         if (student == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(student);
+        return ok(student);
     }
 
     @GetMapping("/find/{age}")
@@ -57,10 +71,10 @@ public class StudentController {
                                                                  @RequestParam(required = false) Integer max) {
 
         if (age > 0 && max == null) {
-            return ResponseEntity.ok(studentService.findStudentWithAge(age));
+            return ok(studentService.findStudentWithAge(age));
         }
         if (age > 0 && max > 0) {
-            return ResponseEntity.ok(studentService.findStudentByAgeBetween(age, max));
+            return ok(studentService.findStudentByAgeBetween(age, max));
 
         }
         return ResponseEntity.notFound().build();
@@ -69,7 +83,7 @@ public class StudentController {
     @GetMapping("/find-faculty/{name}")
     public ResponseEntity getFacultyByStudent(@PathVariable String name) {
         if (name != null) {
-            return ResponseEntity.ok(studentService.findFacultyByStudents(name));
+            return ok(studentService.findFacultyByStudents(name));
         }
         return ResponseEntity.notFound().build();
     }
@@ -77,22 +91,28 @@ public class StudentController {
     @DeleteMapping("/{id}")
     public ResponseEntity deleteStudent(@PathVariable long id) {
         studentService.deleteStudent(id);
-        return ResponseEntity.ok().build();
+        return ok().build();
     }
 
     @GetMapping
     public ResponseEntity<Collection<Student>> getAllStudent() {
-        return ResponseEntity.ok(studentService.getAllStudent());
+        return ok(studentService.getAllStudent());
     }
 
-    @GetMapping("/get-last-five-students")
+    @GetMapping("/last-five")
     public ResponseEntity<Collection<Student>> getLastFiveStudents() {
-        return ResponseEntity.ok(studentService.getLastFiveStudents());
+        return ok(studentService.getLastFiveStudents());
     }
+
+    @GetMapping("/start-with-big-a")
+    public ResponseEntity<Collection<String>> getStudentStartWith() {
+        return ok(studentService.findStudentsStartWithA());
+    }
+
 
     @PostMapping
     public ResponseEntity createStudent(@RequestBody Student student) {
-        return ResponseEntity.ok(studentService.createStudent(student));
+        return ok(studentService.createStudent(student));
     }
 
     @PutMapping("/{id}")
@@ -101,7 +121,7 @@ public class StudentController {
         if (findStudent == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(findStudent);
+        return ok(findStudent);
     }
 
     @PostMapping(value = "/{id}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -111,7 +131,7 @@ public class StudentController {
             return ResponseEntity.badRequest().body("File is too big.");
         }
         avatarService.uploadAvatar(id, cover);
-        return ResponseEntity.ok().build();
+        return ok().build();
     }
 
     @GetMapping(value = "{id}/avatar-from-db")
@@ -145,7 +165,7 @@ public class StudentController {
                                                      @RequestParam("size") Integer pageSize) {
         List<Avatar> avatars = avatarService.getAllAvatar(pageNumber, pageSize);
         avatars.forEach(avatar -> avatar.setPreview(null));
-        return ResponseEntity.ok(avatars);
+        return ok(avatars);
     }
 
 }

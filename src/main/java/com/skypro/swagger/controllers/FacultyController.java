@@ -42,6 +42,12 @@ public class FacultyController {
         return ResponseEntity.ok(facultyService.getAllFaculty());
     }
 
+    @GetMapping("/longest-faculty")
+    public ResponseEntity longestFaculty() {
+        return ResponseEntity.ok(facultyService.getLongestFaculty());
+    }
+
+
     @DeleteMapping("/{id}")
     public ResponseEntity deleteFaculty(@PathVariable Long id) {
         facultyService.deleteFaculty(id);
@@ -65,7 +71,7 @@ public class FacultyController {
 
     @GetMapping("/find/{text}")
     public ResponseEntity<List<Faculty>> getFacultyWithColorEquals(@RequestParam(required = false) String text) {
-        return ResponseEntity.ok(facultyService.findByColorOrNameIgnoreCase(text,text));
+        return ResponseEntity.ok(facultyService.findByColorOrNameIgnoreCase(text, text));
     }
 
     @GetMapping("/students/{id}")

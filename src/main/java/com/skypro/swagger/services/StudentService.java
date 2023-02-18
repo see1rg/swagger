@@ -9,14 +9,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
-    Logger logger = LoggerFactory.getLogger(StudentService.class);
+    private final Logger logger = LoggerFactory.getLogger(StudentService.class);
     private final StudentRepository studentRepository;
     private final FacultyRepository facultyRepository;
     private final AvatarRepository avatarRepository;
+    Object flag = new Object();
+
 
     public StudentService(StudentRepository studentRepository,
                           FacultyRepository facultyRepository, AvatarRepository avatarRepository) {
@@ -76,13 +80,64 @@ public class StudentService {
         return studentRepository.numberOfAllStudents();
     }
 
-    public Integer avgAgeOfAllStudents(){
+    public Double avgAgeOfAllStudents() {
         logger.info("Requesting average  age of all students.");
-        return studentRepository.avgAgeOfAllStudents();
+        return studentRepository.findAll().stream()
+                .collect(Collectors.averagingInt(Student::getAge));
     }
 
     public List<Student> getLastFiveStudents() {
         logger.info("Requesting to get last five students.");
         return studentRepository.getLastFiveStudents();
+    }
+
+    public List<Student> findAll() {
+        logger.info("Requesting to get students start with A.");
+        return studentRepository.findAll();
+    }
+
+    public List<String> findStudentsStartWithA() {
+        logger.info("Requesting to get students start with A.");
+        return studentRepository.findAll().stream()
+                .filter(s -> s.getName().startsWith("A"))
+                .sorted(Comparator.comparing(Student::getName))
+                .map(s -> s.getName().toUpperCase())
+                .collect(Collectors.toList());
+    }
+
+    public void studentsOnTheTerminal() {
+        List<String> list = getAllStudent()
+                .stream().map(Student::getName)
+                .limit(6).toList();
+
+        System.out.println(list.get(0) + "\n" + list.get(1));
+
+        new Thread(() -> {
+            System.out.println(list.get(2) + "\n" + list.get(3));
+        }).start();
+
+        new Thread(() -> {
+            System.out.println(list.get(4) + "\n" + list.get(5));
+        }).start();
+    }
+
+    public void studentsOnTheTerminalSynchronized() {
+        List<String> list = getAllStudent()
+                .stream().map(Student::getName)
+                .limit(6).toList();
+
+        printStudentsSynchronized(list.get(0), list.get(1));
+
+        new Thread(() -> {
+            printStudentsSynchronized(list.get(2), list.get(3));
+        }).start();
+
+        new Thread(() -> {
+            printStudentsSynchronized(list.get(4), list.get(5));
+        }).start();
+    }
+
+    public synchronized void printStudentsSynchronized(String student1, String student2) {
+        System.out.println(student1 + "\n" + student2);
     }
 }

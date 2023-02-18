@@ -32,7 +32,7 @@ public class AvatarService {
     private final StudentService studentService;
     private final AvatarRepository avatarRepository;
     private final StudentRepository studentRepository;
-    Logger logger = LoggerFactory.getLogger(AvatarService.class);
+    private final Logger logger = LoggerFactory.getLogger(AvatarService.class);
 
 
     public AvatarService(StudentService studentService, AvatarRepository avatarRepository,
@@ -75,7 +75,7 @@ public class AvatarService {
 
         try (InputStream is = Files.newInputStream(filePath);
              BufferedInputStream bis = new BufferedInputStream(is, 1024);
-             ByteArrayOutputStream baos = new ByteArrayOutputStream()){
+             ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             BufferedImage image = ImageIO.read(bis);
             int height = image.getHeight() / (image.getWidth() / 100);
             BufferedImage preview = new BufferedImage(100, height, image.getType());
@@ -101,7 +101,7 @@ public class AvatarService {
 
     public List<Avatar> getAllAvatar(Integer pageNumber, Integer pageSize) {
         logger.info("Requesting all avatars for page with number: {}.", pageNumber);
-        PageRequest pageRequest = PageRequest.of(pageNumber-1, pageSize);
+        PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
         return avatarRepository.findAll(pageRequest).getContent();
     }
 }

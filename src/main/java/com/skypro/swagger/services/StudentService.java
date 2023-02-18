@@ -19,7 +19,9 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final FacultyRepository facultyRepository;
     private final AvatarRepository avatarRepository;
-    Object flag = new Object();
+    private final List<String> list6Students = getAllStudent()
+            .stream().map(Student::getName)
+            .limit(6).toList();
 
 
     public StudentService(StudentRepository studentRepository,
@@ -106,11 +108,8 @@ public class StudentService {
     }
 
     public void studentsOnTheTerminal() {
-        List<String> list = getAllStudent()
-                .stream().map(Student::getName)
-                .limit(6).toList();
 
-        System.out.println(list.get(0) + "\n" + list.get(1));
+        System.out.println(list6Students.get(0) + "\n" + list6Students.get(1));
 
         new Thread(() -> {
             try {
@@ -118,27 +117,28 @@ public class StudentService {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            System.out.println(list.get(2) + "\n" + list.get(3));
+            System.out.println(Thread.currentThread().getName() +
+                    "\n" + list6Students.get(2) + "\n" + list6Students.get(3));
         }).start();
 
         new Thread(() -> {
-            System.out.println(list.get(4) + "\n" + list.get(5));
+            System.out.println(Thread.currentThread().getName() +
+                    "\n" + list6Students.get(4) + "\n" + list6Students.get(5));
         }).start();
     }
 
     public void studentsOnTheTerminalSynchronized() {
-        List<String> list = getAllStudent()
-                .stream().map(Student::getName)
-                .limit(6).toList();
 
-        printStudentsSynchronized(list.get(0), list.get(1));
+        printStudentsSynchronized(list6Students.get(0), list6Students.get(1));
 
         new Thread(() -> {
-            printStudentsSynchronized(list.get(2), list.get(3));
+            System.out.println(Thread.currentThread().getName());
+            printStudentsSynchronized(list6Students.get(2), list6Students.get(3));
         }).start();
 
         new Thread(() -> {
-            printStudentsSynchronized(list.get(4), list.get(5));
+            System.out.println(Thread.currentThread().getName());
+            printStudentsSynchronized(list6Students.get(4), list6Students.get(5));
         }).start();
     }
 

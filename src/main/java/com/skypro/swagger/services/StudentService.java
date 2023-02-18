@@ -113,6 +113,11 @@ public class StudentService {
         System.out.println(list.get(0) + "\n" + list.get(1));
 
         new Thread(() -> {
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             System.out.println(list.get(2) + "\n" + list.get(3));
         }).start();
 

@@ -2,7 +2,6 @@ package com.skypro.swagger.services;
 
 import com.skypro.swagger.models.Faculty;
 import com.skypro.swagger.models.Student;
-import com.skypro.swagger.repository.AvatarRepository;
 import com.skypro.swagger.repository.FacultyRepository;
 import com.skypro.swagger.repository.StudentRepository;
 import org.slf4j.Logger;
@@ -18,15 +17,12 @@ public class StudentService {
     private final Logger logger = LoggerFactory.getLogger(StudentService.class);
     private final StudentRepository studentRepository;
     private final FacultyRepository facultyRepository;
-    private final AvatarRepository avatarRepository;
-    Object flag = new Object();
 
 
     public StudentService(StudentRepository studentRepository,
-                          FacultyRepository facultyRepository, AvatarRepository avatarRepository) {
+                          FacultyRepository facultyRepository) {
         this.studentRepository = studentRepository;
         this.facultyRepository = facultyRepository;
-        this.avatarRepository = avatarRepository;
     }
 
     public Student createStudent(Student student) {
@@ -37,7 +33,7 @@ public class StudentService {
 
     public Student findStudent(long id) {
         logger.info("Requesting to find the student with id: {}.", id);
-        return studentRepository.findById(id).get();
+        return studentRepository.findById(id).orElseThrow();
     }
 
     public List<Student> findStudentWithAge(int age) {

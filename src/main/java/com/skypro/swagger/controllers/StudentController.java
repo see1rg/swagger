@@ -35,25 +35,25 @@ public class StudentController {
     }
 
     @GetMapping("/show-the-students-on-the-terminal")
-    public ResponseEntity studentsOnTheTerminal() {
+    public ResponseEntity<?> studentsOnTheTerminal() {
         studentService.studentsOnTheTerminal();
         return ok("Show the terminal.");
     }
 
     @GetMapping("/show-the-students-synchronized")
-    public ResponseEntity studentsOnTheTerminalSynchronized(){
+    public ResponseEntity<?> studentsOnTheTerminalSynchronized(){
         studentService.studentsOnTheTerminalSynchronized();
         return ok("Show the terminal.");
     }
 
 
     @GetMapping("/number-of-all")
-    public ResponseEntity numberOfAllStudents() {
+    public ResponseEntity<?> numberOfAllStudents() {
         return ok(studentService.numberOfAllStudents());
     }
 
     @GetMapping("/avg-age-of-all")
-    public ResponseEntity avgAgeOfAllStudents() {
+    public ResponseEntity<?> avgAgeOfAllStudents() {
         return ok(studentService.avgAgeOfAllStudents());
     }
 
@@ -81,7 +81,7 @@ public class StudentController {
     }
 
     @GetMapping("/find-faculty/{name}")
-    public ResponseEntity getFacultyByStudent(@PathVariable String name) {
+    public ResponseEntity<?> getFacultyByStudent(@PathVariable String name) {
         if (name != null) {
             return ok(studentService.findFacultyByStudents(name));
         }
@@ -89,7 +89,7 @@ public class StudentController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteStudent(@PathVariable long id) {
+    public ResponseEntity<?> deleteStudent(@PathVariable long id) {
         studentService.deleteStudent(id);
         return ok().build();
     }
@@ -111,7 +111,7 @@ public class StudentController {
 
 
     @PostMapping
-    public ResponseEntity createStudent(@RequestBody Student student) {
+    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
         return ok(studentService.createStudent(student));
     }
 
@@ -161,9 +161,9 @@ public class StudentController {
     }
 
     @GetMapping(value = "/avatars")
-    public ResponseEntity<List<Avatar>> getAllAvatar(@RequestParam("page") Integer pageNumber,
-                                                     @RequestParam("size") Integer pageSize) {
-        List<Avatar> avatars = avatarService.getAllAvatar(pageNumber, pageSize);
+    public ResponseEntity<List<Avatar>> getAllAvatar(@RequestParam Integer number,
+                                                     @RequestParam Integer size) {
+        List<Avatar> avatars = avatarService.getAllAvatar(number, size);
         avatars.forEach(avatar -> avatar.setPreview(null));
         return ok(avatars);
     }

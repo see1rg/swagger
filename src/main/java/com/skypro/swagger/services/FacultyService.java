@@ -26,7 +26,7 @@ public class FacultyService {
 
     public Faculty findFaculty(long id) {
         logger.info("Requesting to find the faculty with id: {}.", id);
-        return facultyRepository.findById(id).get();
+        return facultyRepository.findById(id).orElseThrow();
     }
 
     public Faculty editFaculty(Faculty faculty) {
@@ -45,9 +45,9 @@ public class FacultyService {
     }
 
 
-    public List<Faculty> findByColorOrNameIgnoreCase(String color, String name) {
-        logger.info("Requesting to find the faculty by the color: {} or name: {}.", color, name);
-        return facultyRepository.findByColorIgnoreCaseOrNameIgnoreCase(color, name);
+    public List<Faculty> findByColorOrNameIgnoreCase(String text) {
+        logger.info("Requesting to find the faculty by the color: {} or name: {}.", text, text);
+        return facultyRepository.findByColorIgnoreCaseOrNameIgnoreCase(text, text);
     }
 
     public String getLongestFaculty() {
@@ -55,6 +55,6 @@ public class FacultyService {
         return facultyRepository.findAll().stream()
                 .map(Faculty::getName)
                 .max(Comparator.comparingInt(String::length))
-                .get();
+                .orElseThrow();
     }
 }

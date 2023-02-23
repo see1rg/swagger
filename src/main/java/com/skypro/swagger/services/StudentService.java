@@ -2,6 +2,7 @@ package com.skypro.swagger.services;
 
 import com.skypro.swagger.models.Faculty;
 import com.skypro.swagger.models.Student;
+import com.skypro.swagger.repository.AvatarRepository;
 import com.skypro.swagger.repository.FacultyRepository;
 import com.skypro.swagger.repository.StudentRepository;
 import org.slf4j.Logger;
@@ -17,17 +18,13 @@ public class StudentService {
     private final Logger logger = LoggerFactory.getLogger(StudentService.class);
     private final StudentRepository studentRepository;
     private final FacultyRepository facultyRepository;
-
     private final AvatarRepository avatarRepository;
-    private final List<String> list6Students = getAllStudent()
-            .stream().map(Student::getName)
-            .limit(6).toList();
-
 
     public StudentService(StudentRepository studentRepository,
-                          FacultyRepository facultyRepository) {
+                          FacultyRepository facultyRepository, AvatarRepository avatarRepository) {
         this.studentRepository = studentRepository;
         this.facultyRepository = facultyRepository;
+        this.avatarRepository = avatarRepository;
     }
 
     public Student createStudent(Student student) {
@@ -38,7 +35,7 @@ public class StudentService {
 
     public Student findStudent(long id) {
         logger.info("Requesting to find the student with id: {}.", id);
-        return studentRepository.findById(id).orElseThrow();
+        return studentRepository.findById(id).get();
     }
 
     public List<Student> findStudentWithAge(int age) {
@@ -107,8 +104,11 @@ public class StudentService {
     }
 
     public void studentsOnTheTerminal() {
+        List<String> list = getAllStudent()
+                .stream().map(Student::getName)
+                .limit(6).toList();
 
-        System.out.println(list6Students.get(0) + "\n" + list6Students.get(1));
+        System.out.println(list.get(0) + "\n" + list.get(1));
 
         new Thread(() -> {
             try {
@@ -116,28 +116,27 @@ public class StudentService {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            System.out.println(Thread.currentThread().getName() +
-                    "\n" + list6Students.get(2) + "\n" + list6Students.get(3));
+            System.out.println(list.get(2) + "\n" + list.get(3));
         }).start();
 
         new Thread(() -> {
-            System.out.println(Thread.currentThread().getName() +
-                    "\n" + list6Students.get(4) + "\n" + list6Students.get(5));
+            System.out.println(list.get(4) + "\n" + list.get(5));
         }).start();
     }
 
     public void studentsOnTheTerminalSynchronized() {
+        List<String> list = getAllStudent()
+                .stream().map(Student::getName)
+                .limit(6).toList();
 
-        printStudentsSynchronized(list6Students.get(0), list6Students.get(1));
+        printStudentsSynchronized(list.get(0), list.get(1));
 
         new Thread(() -> {
-            System.out.println(Thread.currentThread().getName());
-            printStudentsSynchronized(list6Students.get(2), list6Students.get(3));
+            printStudentsSynchronized(list.get(2), list.get(3));
         }).start();
 
         new Thread(() -> {
-            System.out.println(Thread.currentThread().getName());
-            printStudentsSynchronized(list6Students.get(4), list6Students.get(5));
+            printStudentsSynchronized(list.get(4), list.get(5));
         }).start();
     }
 

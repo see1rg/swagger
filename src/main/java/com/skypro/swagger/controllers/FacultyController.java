@@ -17,15 +17,12 @@ import java.util.List;
 public class FacultyController {
     private final FacultyService facultyService;
     private final StudentService studentService;
-    private final StudentRepository studentRepository;
 
     @Autowired
     public FacultyController(FacultyService facultyService,
-                             StudentService studentService,
-                             StudentRepository studentRepository) {
+                             StudentService studentService) {
         this.facultyService = facultyService;
         this.studentService = studentService;
-        this.studentRepository = studentRepository;
     }
 
     @GetMapping("/{id}")
@@ -43,19 +40,19 @@ public class FacultyController {
     }
 
     @GetMapping("/longest-faculty")
-    public ResponseEntity longestFaculty() {
+    public ResponseEntity<?> longestFaculty() {
         return ResponseEntity.ok(facultyService.getLongestFaculty());
     }
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteFaculty(@PathVariable Long id) {
+    public ResponseEntity<Faculty> deleteFaculty(@PathVariable Long id) {
         facultyService.deleteFaculty(id);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping
-    public ResponseEntity createFaculty(@RequestBody Faculty faculty) {
+    public ResponseEntity<Faculty> createFaculty(@RequestBody Faculty faculty) {
         return ResponseEntity.ok(facultyService.createFaculty(faculty));
     }
 
@@ -70,8 +67,8 @@ public class FacultyController {
     }
 
     @GetMapping("/find/{text}")
-    public ResponseEntity<List<Faculty>> getFacultyWithColorEquals(@RequestParam(required = false) String text) {
-        return ResponseEntity.ok(facultyService.findByColorOrNameIgnoreCase(text, text));
+    public ResponseEntity<List<Faculty>> getFacultyWithColorOrNameEquals(@RequestParam(required = false) String text) {
+        return ResponseEntity.ok(facultyService.findByColorOrNameIgnoreCase(text));
     }
 
     @GetMapping("/students/{id}")
